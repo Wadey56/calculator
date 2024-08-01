@@ -1,4 +1,6 @@
-// .toFixed(7)
+let firstNumber;
+let secondNumber;
+let operator;
 
 function add(number1, number2) {
     if (isNaN(number1) || isNaN(number2)) {
@@ -26,4 +28,17 @@ function divide(number1, number2) {
         return;
     }
     return parseFloat((number1 / number2).toFixed(7));
+}
+
+function operate(number1, number2, operator) {
+    switch (operator) {
+        case "+":
+            return add(number1, number2);
+        case "-":
+            return subtract(number1, number2);
+        case "*":
+            return multiply(number1, number2);
+        case "/":
+            return divide(number1, number2);
+    }
 }
