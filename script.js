@@ -50,5 +50,6 @@ let buttons = document.querySelectorAll("button")
 buttons.forEach(button => {
     button.addEventListener("click", () => {
         display = display + button.value;
+        document.querySelector("#display").textContent = display;
     })
 })
