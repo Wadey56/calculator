@@ -50,7 +50,10 @@ let keys = document.querySelectorAll(".key")
 keys.forEach(key => {
     key.addEventListener("click", () => {
         if (key.value == 0 && display[0] === undefined) {
-            return
+            return;
+        }
+        if (key.value == "." && display.includes(".")) {
+            return;
         }
         display = display + key.value;
         document.querySelector("#display").textContent = display;
