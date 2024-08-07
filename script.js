@@ -42,3 +42,13 @@ function operate(number1, number2, operator) {
             return divide(number1, number2);
     }
 }
+
+let display = "";
+
+let buttons = document.querySelectorAll("button")
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        display = display + button.value;
+    })
+})
