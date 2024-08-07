@@ -45,6 +45,10 @@ function operate(number1, number2, operator) {
 
 let display = "";
 
+function updateDisplay(update) {
+    document.querySelector("#display").textContent = update;
+}
+
 let keys = document.querySelectorAll(".key")
 
 keys.forEach(key => {
@@ -56,11 +60,11 @@ keys.forEach(key => {
             return;
         }
         display = display + key.value;
-        document.querySelector("#display").textContent = display;
+        updateDisplay(display);
     })
 })
 
 document.querySelector("#clear").addEventListener("click", () => {
     display = "";
-    document.querySelector("#display").textContent = display;
+    updateDisplay(display);
 })
