@@ -48,38 +48,63 @@ function updateDisplay(update) {
     document.querySelector("#display").textContent = update;
 }
 
+function handleZero(key, display) {
+    if (key.value == 0) {
+        if (parseFloat(display) == 0) {
+            if (!display.includes(".")) {
+                return false;
+            }
+        }
+        return true;
+    } else if (key.value != 0) {
+        return true;
+    }
+}
+
+function handleDecimal(key, display) {
+    if (key.value == "." && !display.includes(".")) {
+        return true;
+    } else if (key.value != ".") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 let keys = document.querySelectorAll(".key")
 keys.forEach(key => {
     key.addEventListener("click", () => {
-        if ((key.value == 0 && parseFloat(display) == 0 )) {
-            if (!display.includes(".")) {
-                return;
-            }
-        }
-        if (key.value == "." && display.includes(".")) {
+        if (!handleZero(key, display) || !handleDecimal(key, display)) {
             return;
+        } else {
+            display = display + key.value;
+            updateDisplay(display);
         }
-        display = display + key.value;
-        number1 = parseFloat(display);
-        updateDisplay(display);
     })
 })
 
 document.querySelector("#clear").addEventListener("click", () => {
     display = "";
-    number1 = null;
-    number2 = null;
+    number1 = 0;
+    number2 = 0;
     updateDisplay(display);
 })
 
-let operators = document.querySelector(".operator")
+/* 
+let operators = document.querySelectorAll(".operator")
 operators.forEach(operator => {
     operator.addEventListener("click", () => {
-        if (isNaN(parseFloat(display)) || number1 === undefined) {
+        if (parseFloat(display) == 0) {
             return;
         }
-        number1 = parseFloat(display)
-        number2 = parseFloat(display)
+        if (number1 != 0) {
+            number2 = parseFloat(display);
+            number1 = operate(number1, number2, operator.value);
+            updateDisplay(number1);
+        }
+        number1 = parseFloat(display);
+        updateDisplay("0")
     })
 
-})
+}) 
+*/
