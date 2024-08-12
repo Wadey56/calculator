@@ -43,7 +43,7 @@ function operate(number1, number2, operator) {
     }
 }
 
-let display = "";
+let display = "0";
 function updateDisplay(update) {
     document.querySelector("#display").textContent = update;
 }
@@ -76,15 +76,23 @@ keys.forEach(key => {
     key.addEventListener("click", () => {
         if (!handleZero(key, display) || !handleDecimal(key, display)) {
             return;
+        } else if (display[0] == 0 && !display.includes(".")) {
+            if (key.value == ".") {
+                display = "0.";
+                updateDisplay(display);
+            } else {
+                display = key.value;
+                updateDisplay(display);
+            }
         } else {
             display = display + key.value;
             updateDisplay(display);
-        }
+        } 
     })
 })
 
 document.querySelector("#clear").addEventListener("click", () => {
-    display = "";
+    display = "0";
     number1 = 0;
     number2 = 0;
     updateDisplay(display);
