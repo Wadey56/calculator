@@ -1,6 +1,6 @@
 let number1 = 0;
 let number2 = 0;
-let operator = "";
+let operatorCall = "";
 
 function add(number1, number2) {
     if (isNaN(number1) || isNaN(number2)) {
@@ -48,6 +48,7 @@ function updateDisplay(update) {
     document.querySelector("#display").textContent = update;
 }
 
+// only allow 0 after decimal or leading number
 function handleZero(key, display) {
     if (key.value == 0) {
         if (parseFloat(display) == 0) {
@@ -56,11 +57,12 @@ function handleZero(key, display) {
             }
         }
         return true;
-    } else if (key.value != 0) {
+    } else {
         return true;
     }
 }
 
+// only allow a single decimal
 function handleDecimal(key, display) {
     if (key.value == "." && !display.includes(".")) {
         return true;
@@ -74,17 +76,22 @@ function handleDecimal(key, display) {
 let keys = document.querySelectorAll(".key")
 keys.forEach(key => {
     key.addEventListener("click", () => {
+        // check zero and decimal handle cases
         if (!handleZero(key, display) || !handleDecimal(key, display)) {
             return;
+        // if no leading numbers or decimal
         } else if (display[0] == 0 && !display.includes(".")) {
+            // add leading 0 if first key is decimal
             if (key.value == ".") {
                 display = "0.";
                 updateDisplay(display);
             } else {
+                // replace placeholder 0 with first number
                 display = key.value;
                 updateDisplay(display);
             }
         } else {
+            // concat display with key
             display = display + key.value;
             updateDisplay(display);
         } 
@@ -98,21 +105,45 @@ document.querySelector("#clear").addEventListener("click", () => {
     updateDisplay(display);
 })
 
-/* 
+function nestedCalculation(operator) {
+    number2 = parseFloat(display);
+    // if operator has not already been pressed
+    if (operatorCall == "") {
+        operatorCall = operator.value;
+    }
+    number1 = operate(number1, number2, operatorCall);
+    number2 = 0;
+    operatorCall = "";
+    display = "0";
+    updateDisplay(number1);
+}
+
+/* function handleEqual() {
+    if (number1 == "" || number2 == "") {
+        return;
+    } else {
+        number1 = operate(number1, number2, operatorCall);
+        number2 = 0;
+        operatorCall = "";
+        display = "0";
+        updateDisplay(number1);
+    }
+} */
+
 let operators = document.querySelectorAll(".operator")
 operators.forEach(operator => {
     operator.addEventListener("click", () => {
         if (parseFloat(display) == 0) {
             return;
-        }
-        if (number1 != 0) {
-            number2 = parseFloat(display);
-            number1 = operate(number1, number2, operator.value);
-            updateDisplay(number1);
-        }
+        } else if (operator.value == "=") { 
+            handleEqual();
+        } else if (number1 != 0) {
+            nestedCalculation(operator);
+        } else {
         number1 = parseFloat(display);
-        updateDisplay("0")
+        operatorCall = operator.value;
+        display = "0";
+        updateDisplay(display);
+        }
     })
-
 }) 
-*/
