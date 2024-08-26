@@ -1,6 +1,7 @@
 let number1 = 0;
 let number2 = 0;
-let operatorCall = "";
+let operatorCall1 = "";
+let operatorCall2 = "";
 
 function add(number1, number2) {
     if (isNaN(number1) || isNaN(number2)) {
@@ -48,28 +49,27 @@ function updateDisplay(update) {
     document.querySelector("#display").textContent = update;
 }
 
-// only allow 0 after decimal or leading number
-function handleZero(key, display) {
-    if (key.value == 0) {
-        if (parseFloat(display) == 0) {
-            if (!display.includes(".")) {
-                return false;
-            }
-        }
-        return true;
-    } else {
-        return true;
+function allowZero(display) {
+    // only allow 0 if the display has a leading key
+    if (display != "0") {
+        display = display + "0";
+        updateDisplay(display);
+        return display;
     }
 }
 
 // only allow a single decimal
-function handleDecimal(key, display) {
-    if (key.value == "." && !display.includes(".")) {
-        return true;
-    } else if (key.value != ".") {
-        return true;
-    } else {
-        return false;
+function allowDecimal(display) {
+    if (!display.includes(".")) {
+        // add leading 0 if first key is decimal
+        if (display[0] == 0) {
+            display = "0.";
+            updateDisplay(display)
+        } else {
+            display = display + ".";
+            updateDisplay(display);
+        }
+        return display;
     }
 }
 
@@ -77,24 +77,19 @@ let keys = document.querySelectorAll(".key")
 keys.forEach(key => {
     key.addEventListener("click", () => {
         // check zero and decimal handle cases
-        if (!handleZero(key, display) || !handleDecimal(key, display)) {
-            return;
-        // if no leading numbers or decimal
-        } else if (display[0] == 0 && !display.includes(".")) {
-            // add leading 0 if first key is decimal
-            if (key.value == ".") {
-                display = "0.";
-                updateDisplay(display);
-            } else {
-                // replace placeholder 0 with first number
-                display = key.value;
-                updateDisplay(display);
-            }
+        if (key.value == "0") {
+            display = allowZero(display);
+        } else if (key.value == ".") {
+            display = allowDecimal(display);
+        } else if (display == "0") {
+            // replace placeholder 0 with first number
+            display = key.value;
+            updateDisplay(display);
         } else {
             // concat display with key
             display = display + key.value;
             updateDisplay(display);
-        } 
+        }
     })
 })
 
@@ -106,16 +101,20 @@ document.querySelector("#clear").addEventListener("click", () => {
 })
 
 function nestedCalculation(operator) {
-    number2 = parseFloat(display);
     // if operator has not already been pressed
     if (operatorCall == "") {
+        number1 = parseFloat(display);
         operatorCall = operator.value;
+        display = "0"
+        updateDisplay(display)
+    } else {
+        number2 = parseFloat(display);
+        number1 = operate(number1, number2, operatorCall);
+        number2 = 0;
+        operatorCall = "";
+        display = "0";
+        updateDisplay(number1);
     }
-    number1 = operate(number1, number2, operatorCall);
-    number2 = 0;
-    operatorCall = "";
-    display = "0";
-    updateDisplay(number1);
 }
 
 /* function handleEqual() {
@@ -133,17 +132,14 @@ function nestedCalculation(operator) {
 let operators = document.querySelectorAll(".operator")
 operators.forEach(operator => {
     operator.addEventListener("click", () => {
-        if (parseFloat(display) == 0) {
+        if (parseFloat(display) == 0) { // this needs changing
             return;
-        } else if (operator.value == "=") { 
+        }
+
+        if (operator.value == "=") { 
             handleEqual();
-        } else if (number1 != 0) {
-            nestedCalculation(operator);
         } else {
-        number1 = parseFloat(display);
-        operatorCall = operator.value;
-        display = "0";
-        updateDisplay(display);
+            nestedCalculation(operator);
         }
     })
 }) 
