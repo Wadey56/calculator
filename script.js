@@ -97,21 +97,33 @@ document.querySelector("#clear").addEventListener("click", () => {
     display = "0";
     number1 = 0;
     number2 = 0;
+    operatorCall1 = "";
+    operatorCall2 = "";
     updateDisplay(display);
 })
 
 function nestedCalculation(operator) {
-    // if operator has not already been pressed
-    if (operatorCall == "") {
+    // return if no input
+    if (number1 == 0) {
+        return;
+    }
+    // save operand if one has not already been saved
+    if (operatorCall1 == "") {
         number1 = parseFloat(display);
-        operatorCall = operator.value;
-        display = "0"
+        operatorCall1 = operator.value;
+        display = "0";
         updateDisplay(display)
+    // allow for operand override
+    } else if (display == "0") {
+        operatorCall1 = operator.value;
+    // operate on numbers
     } else {
+        operatorCall2 = operator.value;
         number2 = parseFloat(display);
-        number1 = operate(number1, number2, operatorCall);
+        number1 = operate(number1, number2, operatorCall1);
         number2 = 0;
-        operatorCall = "";
+        operatorCall1 = operatorCall2;
+        operatorCall2 = "";
         display = "0";
         updateDisplay(number1);
     }
@@ -132,10 +144,6 @@ function nestedCalculation(operator) {
 let operators = document.querySelectorAll(".operator")
 operators.forEach(operator => {
     operator.addEventListener("click", () => {
-        if (parseFloat(display) == 0) { // this needs changing
-            return;
-        }
-
         if (operator.value == "=") { 
             handleEqual();
         } else {
