@@ -148,7 +148,6 @@ function calculation(operator) {
         }
         display = "0";
         updateDisplay(number1);
-        nested = true;
     }
 }
 
