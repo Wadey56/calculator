@@ -119,7 +119,7 @@ function calculation(operator) {
                 updateDisplay(number1);
             }
         // update number1
-        } else if (display != "0" && operator != "=") {
+        } else if (parseFloat(display) != 0 && operator != "=") {
             number1 = parseFloat(display);
             operatorCall1 = operator;
             display = "0";
@@ -128,7 +128,7 @@ function calculation(operator) {
             return;
         }
     // allow for operator override
-    } else if (display == "0") {
+    } else if (parseFloat(display) == 0) {
         if (operator != "=") {
             operatorCall1 = operator;
         }    
@@ -157,3 +157,7 @@ operators.forEach(operator => {
         calculation(operator.value);        
     })
 }) 
+
+// TODO: You should round answers with long decimals so that they don’t overflow the screen.
+// TODO: Add a “backspace” button, so the user can undo if they click the wrong number.
+
