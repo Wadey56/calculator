@@ -2,6 +2,7 @@ let number1 = 0;
 let number2 = 0;
 let operatorCall1 = "";
 let operatorCall2 = "";
+let nested = false
 
 function add(number1, number2) {
     if (isNaN(number1) || isNaN(number2)) {
@@ -102,52 +103,58 @@ document.querySelector("#clear").addEventListener("click", () => {
     updateDisplay(display);
 })
 
-function nestedCalculation(operator) {
-    // return if no input
-    if (number1 == 0) {
-        return;
-    }
-    // save operand if one has not already been saved
+function calculation(operator) {
+    // save first operator and number
     if (operatorCall1 == "") {
-        number1 = parseFloat(display);
-        operatorCall1 = operator.value;
-        display = "0";
-        updateDisplay(display)
-    // allow for operand override
+        // if number1 already exists start nested calculations
+        if (number1 != 0) {
+            // consider first operator after initial calculation
+            if (number2 == 0) {
+                operatorCall1 = operator;
+                display = "0";
+                updateDisplay(display);
+            } else {
+                number1 = operate(number1, number2, operatorCall2);
+                display = "0";
+                updateDisplay(number1);
+            }
+        // update number1
+        } else if (display != "0" && operator != "=") {
+            number1 = parseFloat(display);
+            operatorCall1 = operator;
+            display = "0";
+            updateDisplay(display)
+        } else {
+            return;
+        }
+    // allow for operator override
     } else if (display == "0") {
-        operatorCall1 = operator.value;
+        if (operator != "=") {
+            operatorCall1 = operator;
+        }    
     // operate on numbers
     } else {
-        operatorCall2 = operator.value;
+        operatorCall2 = operator;
         number2 = parseFloat(display);
         number1 = operate(number1, number2, operatorCall1);
         number2 = 0;
-        operatorCall1 = operatorCall2;
-        operatorCall2 = "";
+        // handle equal sign and reset both operators
+        if (operatorCall2 == "=") {
+            operatorCall1 = "";
+            operatorCall2 = "";
+        } else {
+            operatorCall1 = operatorCall2;
+            operatorCall2 = "";
+        }
         display = "0";
         updateDisplay(number1);
+        nested = true;
     }
 }
-
-/* function handleEqual() {
-    if (number1 == "" || number2 == "") {
-        return;
-    } else {
-        number1 = operate(number1, number2, operatorCall);
-        number2 = 0;
-        operatorCall = "";
-        display = "0";
-        updateDisplay(number1);
-    }
-} */
 
 let operators = document.querySelectorAll(".operator")
 operators.forEach(operator => {
     operator.addEventListener("click", () => {
-        if (operator.value == "=") { 
-            handleEqual();
-        } else {
-            nestedCalculation(operator);
-        }
+        calculation(operator.value);        
     })
 }) 
