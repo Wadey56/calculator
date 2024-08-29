@@ -77,8 +77,11 @@ function allowDecimal(display) {
 let keys = document.querySelectorAll(".key")
 keys.forEach(key => {
     key.addEventListener("click", () => {
+        // check for display overflow
+        if (display.length >= 9) {
+            return;
         // check zero and decimal handle cases
-        if (key.value == "0") {
+        } else if (key.value == "0") {
             display = allowZero(display);
         } else if (key.value == ".") {
             display = allowDecimal(display);
@@ -92,15 +95,6 @@ keys.forEach(key => {
             updateDisplay(display);
         }
     })
-})
-
-document.querySelector("#clear").addEventListener("click", () => {
-    display = "0";
-    number1 = 0;
-    number2 = 0;
-    operatorCall1 = "";
-    operatorCall2 = "";
-    updateDisplay(display);
 })
 
 function calculation(operator) {
@@ -158,6 +152,42 @@ operators.forEach(operator => {
     })
 }) 
 
-// TODO: You should round answers with long decimals so that they don’t overflow the screen.
-// TODO: Add a “backspace” button, so the user can undo if they click the wrong number.
+function clear() {
+    display = "0";
+    number1 = 0;
+    number2 = 0;
+    operatorCall1 = "";
+    operatorCall2 = "";
+    updateDisplay(display);
+}
 
+function backspace() {
+    display = display.slice(0, -1);
+    updateDisplay(display);
+}
+
+function sign() {
+    display = display * -1;
+    updateDisplay(display);
+}
+
+function percent() {
+    display = display / 100;
+    updateDisplay(display);
+}
+
+let actions = document.querySelectorAll(".action")
+actions.forEach(action => {
+    action.addEventListener("click", () => {
+        switch (action.id) {
+            case "clear":
+                return clear();
+            case "backspace":
+                return backspace();
+            case "sign":
+                return sign();
+            case "percent":
+                return percent();
+        }
+    })
+}) 
