@@ -9,6 +9,8 @@ button {
     font-family: monospace;
     border: 2px, black, solid;
     border-radius: 5%;
+    height: 60px;
+    width: 60px;
 }
 
 #container {
@@ -18,7 +20,6 @@ button {
     border-radius: 2%;
     align-items: center;
     width: 350px;
-    height: 350px;
     background-color: rgb(67, 67, 67);
 }
 
@@ -53,10 +54,6 @@ button {
     flex-wrap: wrap;
 }
 
-#key0 {
-    width: 66%;
-}
-
 #operators {
     display: flex;
     justify-content: space-between;
@@ -67,7 +64,21 @@ button {
     width: 33%;
 }
 
+#key0 {
+    width: 66%;
+}
 .key, .operator, .action {
-    background-color: teal;
     padding: 10px 5px;
+}
+
+.key {
+    background-color: teal;
+}
+
+.operator {
+    background-color: orange;
+}
+
+.action {
+    background-color: gainsboro;
 }
