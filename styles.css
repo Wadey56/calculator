@@ -17,8 +17,8 @@ button {
     border: 4px, black, solid;
     border-radius: 2%;
     align-items: center;
-    justify-content: center;
-    width: 400px;
+    width: 350px;
+    height: 350px;
     background-color: rgb(67, 67, 67);
 }
 
@@ -45,14 +45,16 @@ button {
 
 #actions {
     display: flex;
-    justify-content: space-between;
 }
 
 #keys {
     display: flex;
     align-items: center;
-    justify-content: end;
     flex-wrap: wrap;
+}
+
+#key0 {
+    width: 66%;
 }
 
 #operators {
@@ -62,5 +64,10 @@ button {
 }
 
 .key {
-    width: 30%;
+    width: 33%;
+}
+
+.key, .operator, .action {
+    background-color: teal;
+    padding: 10px 5px;
 }
