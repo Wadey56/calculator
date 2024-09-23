@@ -5,12 +5,15 @@ body {
 }
 
 button {
-    font-size: 20px;
+    display: flex;
+    font-size: 25px;
     font-family: monospace;
     border: 2px, black, solid;
-    border-radius: 5%;
+    border-radius: 6px;
     height: 60px;
     width: 60px;
+    justify-content: center;
+    align-items: center;
 }
 
 #container {
@@ -37,6 +40,7 @@ button {
 #keyContainer {
     display: flex;
     flex-direction: row-reverse;
+    margin: 6px;
     }
 
 #actionKeyGroup {
@@ -50,13 +54,13 @@ button {
 
 #keys {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 
 #operators {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-direction: column;
 }
 
@@ -65,10 +69,7 @@ button {
 }
 
 #key0 {
-    width: 66%;
-}
-.key, .operator, .action {
-    padding: 10px 5px;
+    width: 66.6%;
 }
 
 .key {
@@ -81,4 +82,5 @@ button {
 
 .action {
     background-color: gainsboro;
+    width: 25%;
 }
