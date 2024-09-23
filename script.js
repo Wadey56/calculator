@@ -2,7 +2,6 @@ let number1 = 0;
 let number2 = 0;
 let operatorCall1 = "";
 let operatorCall2 = "";
-let nested = false
 
 function add(number1, number2) {
     if (isNaN(number1) || isNaN(number2)) {
@@ -162,8 +161,15 @@ function clear() {
 }
 
 function backspace() {
-    display = display.slice(0, -1);
-    updateDisplay(display);
+    if (display == "0") {
+        return;
+    } else if (display.length == 1) {
+        display = "0";
+        updateDisplay(display);
+    } else {
+        display = display.slice(0, -1);
+        updateDisplay(display);
+    }
 }
 
 function sign() {
